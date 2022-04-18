@@ -24,6 +24,7 @@ namespace Ordering.Infrastructure.Persistence
                     case EntityState.Added:
                         entry.Entity.CreatedDate = DateTime.Now;
                         entry.Entity.CreatedBy = "swn";
+                        entry.Entity.LastModifiedBy = "swn";
                         break;
                     case EntityState.Modified:
                         entry.Entity.LastModifiedDate = DateTime.Now;
