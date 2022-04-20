@@ -1,3 +1,2 @@
-# DotnetMicroservices
-Microservices architecture and implementation on dotnet 6
+Microservices Architecture and Implementation on .NET 6
 
