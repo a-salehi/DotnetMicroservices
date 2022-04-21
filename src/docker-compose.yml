@@ -64,11 +64,18 @@ services:
       context: .
       dockerfile: ApiGateways/Shopping.Aggregator/Dockerfile
 
+  aspnetbasics:
+    image: ${DOCKER_REGISTRY-}aspnetbasics
+    build:
+      context: .
+      dockerfile: WebApps/AspnetBasics/Dockerfile
+
 volumes:
   mongo_data:
   portainer_data:
   postgres_data:
   pgadmin_data:
+
 
 
 
