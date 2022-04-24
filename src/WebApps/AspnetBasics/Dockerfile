@@ -7,6 +7,7 @@ EXPOSE 80
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["WebApps/AspnetBasics/AspnetBasics.csproj", "WebApps/AspnetBasics/"]
+COPY ["BuildingBlocks/Common.Logging/Common.Logging.csproj", "BuildingBlocks/Common.Logging/"]
 RUN dotnet restore "WebApps/AspnetBasics/AspnetBasics.csproj"
 COPY . .
 WORKDIR "/src/WebApps/AspnetBasics"
