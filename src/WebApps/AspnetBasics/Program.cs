@@ -1,6 +1,10 @@
 using AspnetBasics.Services;
+using Common.Logging;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Host.UseSerilog(SeriLogger.Configure);
 
 builder.Services.AddHttpClient<ICatalogService, CatalogService>(c =>
                 c.BaseAddress = new Uri(builder.Configuration["ApiSettings:GatewayAddress"]));
