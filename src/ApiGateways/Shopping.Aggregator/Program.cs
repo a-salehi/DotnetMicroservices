@@ -3,6 +3,9 @@ using Polly;
 using Polly.Extensions.Http;
 using Serilog;
 using Common.Logging;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using HealthChecks.UI.Client;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,6 +38,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddHealthChecks()
+                .AddUrlGroup(new Uri($"{builder.Configuration["ApiSettings:CatalogUrl"]}/swagger/index.html"), "Catalog.API", HealthStatus.Degraded)
+                .AddUrlGroup(new Uri($"{builder.Configuration["ApiSettings:BasketUrl"]}/swagger/index.html"), "Basket.API", HealthStatus.Degraded)
+                .AddUrlGroup(new Uri($"{builder.Configuration["ApiSettings:OrderingUrl"]}/swagger/index.html"), "Ordering.API", HealthStatus.Degraded);
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -47,6 +55,12 @@ if (app.Environment.IsDevelopment())
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapHealthChecks("/hc", new HealthCheckOptions()
+ {
+     Predicate = _ => true,
+     ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+ });
 
 app.Run();
 
