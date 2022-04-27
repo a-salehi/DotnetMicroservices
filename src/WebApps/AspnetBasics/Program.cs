@@ -1,5 +1,8 @@
 using AspnetBasics.Services;
 using Common.Logging;
+using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Polly;
 using Polly.Extensions.Http;
 using Serilog;
@@ -30,6 +33,9 @@ builder.Services.AddHttpClient<IOrderService, OrderService>(c =>
 
 builder.Services.AddRazorPages();
 
+builder.Services.AddHealthChecks()
+                .AddUrlGroup(new Uri(builder.Configuration["ApiSettings:GatewayAddress"]), "Ocelot API Gw", HealthStatus.Degraded);
+
 var app = builder.Build();
 
 //app.MapGet("/", () => "Hello World!");
@@ -42,6 +48,11 @@ app.UseAuthorization();
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapRazorPages();
+    endpoints.MapHealthChecks("/hc", new HealthCheckOptions()
+    {
+        Predicate = _ => true,
+        ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+    });
 });
 
 app.Run();
