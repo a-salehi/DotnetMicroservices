@@ -61,10 +61,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Basket.API v1"));
 }
 
-
 app.UseAuthorization();
 
 app.MapControllers();
+
 app.MapHealthChecks("/hc", new HealthCheckOptions()
 {
     Predicate = _ => true,
