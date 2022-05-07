@@ -25,18 +25,18 @@ namespace IdentityServer
                    },
                    new Client
                    {
-                       ClientId = "web_mvc_client",
-                       ClientName = "Web MVC Web App",
+                       ClientId = "web_client",
+                       ClientName = "Web App",
                        AllowedGrantTypes = GrantTypes.Hybrid,
                        RequirePkce = false,
                        AllowRememberConsent = false,
                        RedirectUris = new List<string>()
                        {
-                           "https://localhost:7002/signin-oidc"
+                           "http://localhost:6006/signin-oidc"
                        },
                        PostLogoutRedirectUris = new List<string>()
                        {
-                           "https://localhost:7002/signout-callback-oidc"
+                           "http://localhost:6006/signout-callback-oidc"
                        },
                        ClientSecrets = new List<Secret>
                        {
@@ -85,12 +85,12 @@ namespace IdentityServer
                 new TestUser
                 {
                     SubjectId = "5BE86359-073C-434B-AD2D-A3932222DABE",
-                    Username = "mehmet",
+                    Username = "a-salehi",
                     Password = "swn",
                     Claims = new List<Claim>
                     {
-                        new Claim(JwtClaimTypes.GivenName, "mehmet"),
-                        new Claim(JwtClaimTypes.FamilyName, "ozkaya")
+                        new Claim(JwtClaimTypes.GivenName, "amirhossein"),
+                        new Claim(JwtClaimTypes.FamilyName, "salehi")
                     }
                 }
             };
