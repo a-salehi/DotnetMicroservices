@@ -1,8 +1,12 @@
 using AspnetBasics.Services;
 using Common.Logging;
 using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Microsoft.IdentityModel.Tokens;
 using Polly;
 using Polly.Extensions.Http;
 using Serilog;
@@ -36,6 +40,43 @@ builder.Services.AddRazorPages();
 builder.Services.AddHealthChecks()
                 .AddUrlGroup(new Uri(builder.Configuration["ApiSettings:GatewayAddress"]), "Ocelot API Gw", HealthStatus.Degraded);
 
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+})
+.AddCookie(CookieAuthenticationDefaults.AuthenticationScheme)
+.AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options =>
+{
+  options.SignInScheme = "Cookies";
+  options.Authority = "https://localhost:7000";
+  options.ClientId = "webapp_client";
+  options.ClientSecret = "secret";
+  options.ResponseType = "code id_token";
+
+  options.Scope.Add("openid");
+  options.Scope.Add("profile");
+  //options.Scope.Add("address");
+  //options.Scope.Add("email");
+  //options.Scope.Add("roles");
+  //options.ClaimActions.DeleteClaim("sid");
+  //options.ClaimActions.DeleteClaim("idp");
+  //options.ClaimActions.DeleteClaim("s_hash");
+  //options.ClaimActions.DeleteClaim("auth_time");
+  //options.ClaimActions.MapUniqueJsonKey("role", "role");
+
+  //options.Scope.Add("catalogAPI");
+
+  options.SaveTokens = true;
+  options.GetClaimsFromUserInfoEndpoint = true;
+
+  //options.TokenValidationParameters = new TokenValidationParameters
+  //{
+  //   NameClaimType = JwtClaimTypes.GivenName,
+  //   RoleClaimType = JwtClaimTypes.Role
+  //};
+});
+
 var app = builder.Build();
 
 //app.MapGet("/", () => "Hello World!");
@@ -43,7 +84,9 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
+app.UseCookiePolicy();
 
 app.UseEndpoints(endpoints =>
 {
