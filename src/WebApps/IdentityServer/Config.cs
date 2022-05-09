@@ -45,12 +45,11 @@ namespace IdentityServer
                        AllowedScopes = new List<string>
                        {
                            IdentityServerConstants.StandardScopes.OpenId,
-                           IdentityServerConstants.StandardScopes.Profile
-                           //,
-                           //IdentityServerConstants.StandardScopes.Address,
-                           //IdentityServerConstants.StandardScopes.Email,                           
-                           //"catalogAPI",
-                           //"roles"
+                           IdentityServerConstants.StandardScopes.Profile,
+                           IdentityServerConstants.StandardScopes.Address,
+                           IdentityServerConstants.StandardScopes.Email,
+                           "catalogAPI"
+                           ,"roles"
                        }
                    }
             };
@@ -64,21 +63,20 @@ namespace IdentityServer
         public static IEnumerable<ApiResource> ApiResources =>
           new ApiResource[]
           {
-               //new ApiResource("movieAPI", "Movie API")
+               //new ApiResource("catalogAPI", "Catalog API")
           };
 
         public static IEnumerable<IdentityResource> IdentityResources =>
           new IdentityResource[]
           {
               new IdentityResources.OpenId(),
-              new IdentityResources.Profile()
-              //,
-              //new IdentityResources.Address(),
-              //new IdentityResources.Email(),
-              //new IdentityResource(
-              //      "roles",
-              //      "Your role(s)",
-              //      new List<string>() { "role" })
+              new IdentityResources.Profile(),
+              new IdentityResources.Address(),
+              new IdentityResources.Email(),
+              new IdentityResource(
+                    "roles",
+                    "Your role(s)",
+                    new List<string>() { "role" })
           };
 
         public static List<TestUser> TestUsers =>

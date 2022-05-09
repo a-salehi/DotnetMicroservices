@@ -67,11 +67,11 @@ namespace AspnetBasics.Pages
             return RedirectToPage("Cart");
         }
 
-        public async Task<IActionResult> OnPostLogoutAsync()
+        public async Task<IActionResult> OnGetLogoutAsync()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             await HttpContext.SignOutAsync(OpenIdConnectDefaults.AuthenticationScheme);
-
+            //return Page();
             return RedirectToPage();
         }
 

@@ -39,13 +39,22 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-page="/Contact">Contact</a>
                         </li>
+                        @if (User.IsInRole("admin"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-page="/OnlyAdmin" >Only Admin Page</a>
+                            </li>
+                        }
                         @if (User.Identity.IsAuthenticated)
                         {
-                            <form asp-page="/Index" asp-page-handler="Logout" method="post">
+                            <li class="nav-item">
+                                   <a class="nav-link" asp-area="" asp-page="/Index" asp-page-handler="Logout" >Logout</a>
+                            </li>
+                           @* <form asp-page="/Index" asp-page-handler="Logout" method="get">
                                <li class="nav-item">
                                    <a onclick="this.parentNode.parentNode.submit();" class="nav-link">Logout</a>
                                </li>
-                            </form>                           
+                            </form> *@                          
                         }
                     </ul>
 

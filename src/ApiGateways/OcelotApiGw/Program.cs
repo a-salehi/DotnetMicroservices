@@ -3,6 +3,7 @@ using Ocelot.Middleware;
 using Ocelot.Cache.CacheManager;
 using Serilog;
 using Common.Logging;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +15,20 @@ builder.Configuration.AddJsonFile($"ocelot.{builder.Environment.EnvironmentName}
 //builder.Logging.AddConsole();
 //builder.Logging.AddDebug();
 
+var authenticationProviderKey = "IdentityApiKey";
+
+// NUGET - Microsoft.AspNetCore.Authentication.JwtBearer
+builder.Services.AddAuthentication()
+ .AddJwtBearer(authenticationProviderKey, x =>
+ {
+     x.Authority = "https://localhost:7000"; // IDENTITY SERVER URL
+                                             //x.RequireHttpsMetadata = false;
+                 x.TokenValidationParameters = new TokenValidationParameters
+     {
+         ValidateAudience = false
+     };
+ });
+
 builder.Services.AddOcelot().AddCacheManager(settings => settings.WithDictionaryHandle());
 
 var app = builder.Build();
@@ -23,10 +38,11 @@ app.UseRouting();
 
 app.UseEndpoints(endpoints =>
 {
-    endpoints.MapGet("/", async context =>
-    {
-        await context.Response.WriteAsync("Hello World!");
-    });
+    endpoints.MapControllers();
+    //endpoints.MapGet("/", async context =>
+    //{
+    //    await context.Response.WriteAsync("Hello World!");
+    //});
 });
 
 await app.UseOcelot(); 
