@@ -41,9 +41,9 @@
                         </li>
                         @if (User.IsInRole("admin"))
                         {
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-page="/OnlyAdmin" >Only Admin Page</a>
-                            </li>
+                          <li class="nav-item">
+                              <a class="nav-link" asp-area="" asp-page="/OnlyAdmin">Only Admin Page</a>
+                          </li>
                         }
                         @if (User.Identity.IsAuthenticated)
                         {

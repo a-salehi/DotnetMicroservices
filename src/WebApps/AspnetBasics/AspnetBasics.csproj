@@ -7,11 +7,7 @@
     <DockerComposeProjectPath>..\..\docker-compose.dcproj</DockerComposeProjectPath>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>..\..</DockerfileContext>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <Content Remove="Pages\OnlyAdmin.cshtml" />
-  </ItemGroup>
+  </PropertyGroup>  
 
   <ItemGroup>
     <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="6.0.4" />
@@ -24,18 +20,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\BuildingBlocks\Common.Logging\Common.Logging.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <UpToDateCheckInput Remove="Pages\OnlyAdmin.cshtml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <_ContentIncludedByDefault Remove="Pages\OnlyAdmin.cshtml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="Pages\OnlyAdmin.cshtml" />
   </ItemGroup>
 
 </Project>
