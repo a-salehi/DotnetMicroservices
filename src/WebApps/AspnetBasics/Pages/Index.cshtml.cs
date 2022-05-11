@@ -69,10 +69,19 @@ namespace AspnetBasics.Pages
 
         public async Task<IActionResult> OnGetLogoutAsync()
         {
+            if (HttpContext.Request.Cookies.Count > 0)
+            {
+                var siteCookies = HttpContext.Request.Cookies.Where(c => c.Key.Contains(".AspNetCore.") || c.Key.Contains("idsrv"));
+                foreach (var cookie in siteCookies)
+                {
+                    Response.Cookies.Delete(cookie.Key);
+                }
+            }
+
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             await HttpContext.SignOutAsync(OpenIdConnectDefaults.AuthenticationScheme);
-            //return Page();
-            return RedirectToPage();
+            
+            return RedirectToPage("/Index");
         }
 
     }
