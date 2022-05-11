@@ -72,6 +72,7 @@ services:
       - "DatabaseSettings:ConnectionString=mongodb://catalogdb:27017"
       - "ElasticConfiguration:Uri=http://elasticsearch:9200"
     depends_on:
+      - identityserver
       - catalogdb
     ports:
       - "8000:80"
@@ -147,7 +148,7 @@ services:
     container_name: shopping.aggregator
     environment:
         - ASPNETCORE_ENVIRONMENT=Development
-        - "ApiSettings:CatalogUrl=http://catalog.api"
+        - "ApiSettings:CatalogUrl=https://catalog.api"
         - "ApiSettings:BasketUrl=http://basket.api"
         - "ApiSettings:OrderingUrl=http://ordering.api"
         - "ElasticConfiguration:Uri=http://elasticsearch:9200"
@@ -163,9 +164,10 @@ services:
     container_name: aspnetbasics
     environment:
         - ASPNETCORE_ENVIRONMENT=Development
-        - "ApiSettings:GatewayAddress=http://ocelotapigw"
+        - "ApiSettings:GatewayAddress=https://ocelotapigw"
         - "ElasticConfiguration:Uri=http://elasticsearch:9200"
     depends_on:
+        - identityserver
         - ocelotapigw
         - catalog.api
         - basket.api
@@ -201,7 +203,7 @@ services:
     environment:
         - ASPNETCORE_ENVIRONMENT=Development
         - HealthChecksUI__HealthChecks__0__Name=Catalog Health Check
-        - HealthChecksUI__HealthChecks__0__Uri=http://catalog.api/hc
+        - HealthChecksUI__HealthChecks__0__Uri=https://catalog.api/hc
         - HealthChecksUI__HealthChecks__1__Name=Basket Health Check
         - HealthChecksUI__HealthChecks__1__Uri=http://basket.api/hc
         - HealthChecksUI__HealthChecks__2__Name=Discount Health Check
@@ -211,7 +213,19 @@ services:
         - HealthChecksUI__HealthChecks__4__Name=Shopping Aggregator Health Check
         - HealthChecksUI__HealthChecks__4__Uri=http://shopping.aggregator/hc
         - HealthChecksUI__HealthChecks__5__Name=AspnetBasics WebMVC Health Check
-        - HealthChecksUI__HealthChecks__5__Uri=http://aspnetbasics/hc    
+        - HealthChecksUI__HealthChecks__5__Uri=https://aspnetbasics/hc    
     ports:
         - "8007:80"
 
+
+  identityserver:
+    container_name: identityserver
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+    ports:
+      - "7000:80"
+      - "443:443"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
