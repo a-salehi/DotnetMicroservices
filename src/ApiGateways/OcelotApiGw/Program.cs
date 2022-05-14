@@ -32,7 +32,7 @@ builder.Services.AddAuthentication()
 builder.Services.AddOcelot().AddCacheManager(settings => settings.WithDictionaryHandle());
 
 var app = builder.Build();
-
+app.UseHttpsRedirection();
 //app.MapGet("/", () => "Hello World!");
 app.UseRouting();
 

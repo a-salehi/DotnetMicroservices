@@ -81,7 +81,7 @@ builder.Services.AddAuthentication(options =>
 .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options =>
 {
   //options.SignInScheme = "Cookies";
-  options.Authority = "https://localhost:7000";
+  options.Authority = "https://identityserver:7000";
   options.ClientId = "webapp_client";
   options.ClientSecret = "secret";
   options.ResponseType = "code id_token";
@@ -112,6 +112,7 @@ builder.Services.AddAuthentication(options =>
 var app = builder.Build();
 
 //app.MapGet("/", () => "Hello World!");
+app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();

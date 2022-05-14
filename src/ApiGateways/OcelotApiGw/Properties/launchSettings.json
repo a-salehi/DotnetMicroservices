@@ -10,10 +10,11 @@
   "profiles": {
     "OcelotApiGw": {
       "commandName": "Project",
+      "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Local"
       },
-      "applicationUrl": "https://localhost:6010",
+      "applicationUrl": "https://localhost:6010;http://localhost:4010",
       "dotnetRunMessages": true
     },
     "IIS Express": {

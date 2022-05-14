@@ -41,6 +41,7 @@ builder.Services.AddHealthChecks()
 
 var app = builder.Build();
 
+app.UseHttpsRedirection();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
