@@ -2,6 +2,10 @@
 
 ![alt text](https://user-images.githubusercontent.com/1147445/110304529-c5b70180-800c-11eb-832b-a2751b5bda76.png)
 
+## Securing Microservices with IdentityServer4, OAuth2 and OpenID Connect fronted by Ocelot API Gateway
+
+![alt text](https://user-images.githubusercontent.com/78356597/168614439-fbb9a83c-fcdc-4b76-9925-9a8cfd9d699b.png)
+
 ### Run The Project
 
 You will need the following tools:
