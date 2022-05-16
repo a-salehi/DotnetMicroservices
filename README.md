@@ -35,3 +35,7 @@ Follow these steps to get your development environment set up: (Before Run Start
 docker-compose -f docker-compose.yml -f docker-compose.override.yml up -d
 ````
 
+Check the application with logging the system with below credentials;
+
+- username - password 1 : alice - alice
+- username - password 2 : bob - bob
