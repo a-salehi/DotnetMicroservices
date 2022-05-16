@@ -20,7 +20,8 @@ builder.Services.AddControllers();
 builder.Services.AddAuthentication("Bearer")
                     .AddJwtBearer("Bearer", options =>
                     {
-                        options.Authority = "https://localhost:7000";
+                        options.RequireHttpsMetadata = false;
+                        options.Authority = "http://localhost:7000";
                         options.TokenValidationParameters = new TokenValidationParameters
                         {
                             ValidateAudience = false
@@ -41,7 +42,11 @@ builder.Services.AddHealthChecks()
 
 var app = builder.Build();
 
-app.UseHttpsRedirection();
+app.UseCookiePolicy(new CookiePolicyOptions()
+{
+    MinimumSameSitePolicy = Microsoft.AspNetCore.Http.SameSiteMode.Lax
+});
+//app.UseHttpsRedirection();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

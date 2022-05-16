@@ -21,7 +21,8 @@ var authenticationProviderKey = "IdentityApiKey";
 builder.Services.AddAuthentication()
  .AddJwtBearer(authenticationProviderKey, x =>
  {
-     x.Authority = "https://localhost:7000"; // IDENTITY SERVER URL
+     x.RequireHttpsMetadata = false;
+     x.Authority = "http://localhost:7000"; // IDENTITY SERVER URL
                                              //x.RequireHttpsMetadata = false;
                  x.TokenValidationParameters = new TokenValidationParameters
      {
@@ -32,9 +33,14 @@ builder.Services.AddAuthentication()
 builder.Services.AddOcelot().AddCacheManager(settings => settings.WithDictionaryHandle());
 
 var app = builder.Build();
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 //app.MapGet("/", () => "Hello World!");
 app.UseRouting();
+
+app.UseCookiePolicy(new CookiePolicyOptions()
+{
+    MinimumSameSitePolicy = Microsoft.AspNetCore.Http.SameSiteMode.Lax
+});
 
 app.UseEndpoints(endpoints =>
 {

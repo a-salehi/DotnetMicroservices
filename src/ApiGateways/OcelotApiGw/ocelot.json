@@ -3,7 +3,7 @@
     //Catalog API
     {
       "DownstreamPathTemplate": "/api/v1/Catalog",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
@@ -134,6 +134,6 @@
     }
   ],
   "GlobalConfiguration": {
-    "BaseUrl": "https://localhost:8010"
+    "BaseUrl": "http://localhost:8010"
   }
 }

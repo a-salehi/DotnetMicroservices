@@ -83,6 +83,7 @@ services:
       context: .
       dockerfile: WebApps/WebStatus/Dockerfile
 
+
   identityserver:
     image: ${DOCKER_REGISTRY-}identityserver
     build:
@@ -95,6 +96,7 @@ volumes:
   postgres_data:
   pgadmin_data:
   elasticsearch-data:
+
 
 
 

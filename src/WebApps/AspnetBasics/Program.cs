@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Net.Http.Headers;
 using Polly;
@@ -14,6 +15,8 @@ using Polly.Extensions.Http;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+IdentityModelEventSource.ShowPII = true;
 
 builder.Host.UseSerilog(SeriLogger.Configure);
 
@@ -45,7 +48,7 @@ builder.Services.AddHttpClient<IOrderService, OrderService>(c =>
 
 builder.Services.AddHttpClient<IUserService, UserService>(client =>
                 {
-                   client.BaseAddress = new Uri("https://localhost:7000/");
+                   client.BaseAddress = new Uri("http://localhost:7000");
                    client.DefaultRequestHeaders.Clear();
                    client.DefaultRequestHeaders.Add(HeaderNames.Accept, "application/json");
                 });
@@ -80,8 +83,9 @@ builder.Services.AddAuthentication(options =>
 .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme)
 .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options =>
 {
-  //options.SignInScheme = "Cookies";
-  options.Authority = "https://identityserver:7000";
+    //options.SignInScheme = "Cookies";
+  options.RequireHttpsMetadata = false;
+  options.Authority = "http://localhost:7000";
   options.ClientId = "webapp_client";
   options.ClientSecret = "secret";
   options.ResponseType = "code id_token";
@@ -111,12 +115,23 @@ builder.Services.AddAuthentication(options =>
 
 var app = builder.Build();
 
+// Configure the HTTP request pipeline.
+//if (!app.Environment.IsDevelopment())
+//{
+//    app.UseExceptionHandler("/Error");
+//    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+//    app.UseHsts();
+//}
+
 //app.MapGet("/", () => "Hello World!");
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.UseCookiePolicy(new CookiePolicyOptions()
+{
+    MinimumSameSitePolicy = Microsoft.AspNetCore.Http.SameSiteMode.Lax
+});
 app.UseAuthentication();
 app.UseAuthorization();
 //app.UseCookiePolicy();

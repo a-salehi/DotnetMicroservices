@@ -71,14 +71,12 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - "DatabaseSettings:ConnectionString=mongodb://catalogdb:27017"
       - "ElasticConfiguration:Uri=http://elasticsearch:9200"
-      - ASPNETCORE_URLS="https://+;http://+"
-      - ASPNETCORE_HTTPS_PORT=8000 
+      - ASPNETCORE_URLS="http://+"
     depends_on:
       - identityserver
       - catalogdb
     ports:
-      - "8000:443"
-      - "4000:80"
+      - "8000:80"
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${USERPROFILE}/.aspnet/Https:/root/.aspnet/https:ro  
@@ -140,8 +138,7 @@ services:
     container_name: ocelotapigw
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS="https://+;http://+"
-      - ASPNETCORE_HTTPS_PORT=8010 
+      - ASPNETCORE_URLS="http://+"
       - "ElasticConfiguration:Uri=http://elasticsearch:9200"
     depends_on:
         - identityserver
@@ -150,8 +147,7 @@ services:
         - discount.api
         - ordering.api
     ports:
-      - "8010:443"
-      - "4010:80"
+      - "8010:80"
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${USERPROFILE}/.aspnet/Https:/root/.aspnet/https:ro
@@ -177,12 +173,9 @@ services:
     container_name: aspnetbasics
     environment:
         - ASPNETCORE_ENVIRONMENT=Development
-        - ASPNETCORE_URLS="https://+;http://+"
-        - ASPNETCORE_HTTPS_PORT=8006 
+        - ASPNETCORE_URLS="http://+"
         - "ApiSettings:GatewayAddress=https://ocelotapigw"
         - "ElasticConfiguration:Uri=http://elasticsearch:9200"
-        - Kestrel:Certificates:Default:Path=/root/.aspnet/https/aspnetapp.pfx
-        - Kestrel:Certificates:Default:Password=1234
     depends_on:
         - identityserver
         - ocelotapigw
@@ -191,8 +184,7 @@ services:
         - discount.api
         - ordering.api
     ports:
-        - "8006:443"
-        - "4006:80"
+        - "8006:80"
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${USERPROFILE}/.aspnet/Https:/root/.aspnet/https:ro 
@@ -239,15 +231,14 @@ services:
         - "8007:80"
 
 
+
   identityserver:
     container_name: identityserver
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS="https://+;http://+"
-      - ASPNETCORE_HTTPS_PORT=7000      
+      - ASPNETCORE_URLS=http://+:80
     ports:
-      - "7000:443"
-      - "4001:80"
+      - "7000:80"
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${USERPROFILE}/.aspnet/Https:/root/.aspnet/https:ro
