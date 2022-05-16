@@ -22,7 +22,7 @@ builder.Services.AddAuthentication()
  .AddJwtBearer(authenticationProviderKey, x =>
  {
      x.RequireHttpsMetadata = false;
-     x.Authority = "http://localhost:7000"; // IDENTITY SERVER URL
+     x.Authority = "http://identityserver:7000"; // IDENTITY SERVER URL
                                              //x.RequireHttpsMetadata = false;
                  x.TokenValidationParameters = new TokenValidationParameters
      {
@@ -34,7 +34,7 @@ builder.Services.AddOcelot().AddCacheManager(settings => settings.WithDictionary
 
 var app = builder.Build();
 //app.UseHttpsRedirection();
-//app.MapGet("/", () => "Hello World!");
+app.MapGet("/", () => "Hello World!");
 app.UseRouting();
 
 app.UseCookiePolicy(new CookiePolicyOptions()

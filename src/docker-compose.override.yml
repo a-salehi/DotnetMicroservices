@@ -71,7 +71,6 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - "DatabaseSettings:ConnectionString=mongodb://catalogdb:27017"
       - "ElasticConfiguration:Uri=http://elasticsearch:9200"
-      - ASPNETCORE_URLS="http://+"
     depends_on:
       - identityserver
       - catalogdb
@@ -79,7 +78,6 @@ services:
       - "8000:80"
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
-      - ${USERPROFILE}/.aspnet/Https:/root/.aspnet/https:ro  
 
   basket.api:
     container_name: basket.api
@@ -138,7 +136,6 @@ services:
     container_name: ocelotapigw
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS="http://+"
       - "ElasticConfiguration:Uri=http://elasticsearch:9200"
     depends_on:
         - identityserver
@@ -150,7 +147,6 @@ services:
       - "8010:80"
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
-      - ${USERPROFILE}/.aspnet/Https:/root/.aspnet/https:ro
 
 
   shopping.aggregator:
@@ -167,27 +163,7 @@ services:
         - ordering.api
     ports:
         - "8005:80"
-
-
-  aspnetbasics:
-    container_name: aspnetbasics
-    environment:
-        - ASPNETCORE_ENVIRONMENT=Development
-        - ASPNETCORE_URLS="http://+"
-        - "ApiSettings:GatewayAddress=https://ocelotapigw"
-        - "ElasticConfiguration:Uri=http://elasticsearch:9200"
-    depends_on:
-        - identityserver
-        - ocelotapigw
-        - catalog.api
-        - basket.api
-        - discount.api
-        - ordering.api
-    ports:
-        - "8006:80"
-    volumes:
-      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
-      - ${USERPROFILE}/.aspnet/Https:/root/.aspnet/https:ro 
+ 
 
   elasticsearch:
     container_name: elasticsearch
@@ -236,9 +212,29 @@ services:
     container_name: identityserver
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://+:80
     ports:
-      - "7000:80"
+      - "7000:7000"
+    networks:
+     - mconetwork
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
-      - ${USERPROFILE}/.aspnet/Https:/root/.aspnet/https:ro
+
+  aspnetbasics:
+    container_name: aspnetbasics
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "ApiSettings:GatewayAddress=http://ocelotapigw"
+      - "ElasticConfiguration:Uri=http://elasticsearch:9200"
+    depends_on:
+      - identityserver
+      - ocelotapigw
+      - catalog.api
+      - basket.api
+      - discount.api
+      - ordering.api
+    ports:
+      - "8006:8006"
+    networks:
+     - mconetwork
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro

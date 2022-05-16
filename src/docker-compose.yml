@@ -64,12 +64,7 @@ services:
       context: .
       dockerfile: ApiGateways/Shopping.Aggregator/Dockerfile
 
-  aspnetbasics:
-    image: ${DOCKER_REGISTRY-}aspnetbasics
-    build:
-      context: .
-      dockerfile: WebApps/AspnetBasics/Dockerfile
-
+  
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.9.2
 
@@ -89,6 +84,13 @@ services:
     build:
       context: .
       dockerfile: WebApps/IdentityServer/Dockerfile
+      
+
+  aspnetbasics:
+    image: ${DOCKER_REGISTRY-}aspnetbasics
+    build:
+      context: .
+      dockerfile: WebApps/AspnetBasics/Dockerfile
 
 volumes:
   mongo_data:
@@ -96,6 +98,12 @@ volumes:
   postgres_data:
   pgadmin_data:
   elasticsearch-data:
+
+
+networks:
+  mconetwork:
+    driver: bridge
+
 
 
 

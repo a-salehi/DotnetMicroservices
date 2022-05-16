@@ -15,8 +15,8 @@ using Polly.Extensions.Http;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.WebHost.UseUrls("http://+:8006");
 
-IdentityModelEventSource.ShowPII = true;
 
 builder.Host.UseSerilog(SeriLogger.Configure);
 
@@ -48,7 +48,7 @@ builder.Services.AddHttpClient<IOrderService, OrderService>(c =>
 
 builder.Services.AddHttpClient<IUserService, UserService>(client =>
                 {
-                   client.BaseAddress = new Uri("http://localhost:7000");
+                   client.BaseAddress = new Uri("http://identityserver:7000");
                    client.DefaultRequestHeaders.Clear();
                    client.DefaultRequestHeaders.Add(HeaderNames.Accept, "application/json");
                 });
@@ -77,15 +77,23 @@ builder.Services.AddHealthChecks()
 
 builder.Services.AddAuthentication(options =>
 {
+    IdentityModelEventSource.ShowPII = true;
     options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
 })
 .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme)
 .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options =>
 {
-    //options.SignInScheme = "Cookies";
-  options.RequireHttpsMetadata = false;
+    //options.SignInScheme = "Cookies";  
   options.Authority = "http://localhost:7000";
+  options.MetadataAddress = "http://identityserver:7000/.well-known/openid-configuration";
+  options.RequireHttpsMetadata = false;
+  options.Events.OnRedirectToIdentityProvider = context =>
+    {
+        // Intercept the redirection so the browser navigates to the right URL in your host
+        context.ProtocolMessage.IssuerAddress = "http://localhost:7000/connect/authorize";
+        return Task.CompletedTask;
+    };
   options.ClientId = "webapp_client";
   options.ClientSecret = "secret";
   options.ResponseType = "code id_token";
