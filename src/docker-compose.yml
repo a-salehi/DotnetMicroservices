@@ -98,11 +98,7 @@ volumes:
   postgres_data:
   pgadmin_data:
   elasticsearch-data:
-
-
-networks:
-  mconetwork:
-    driver: bridge
+  
 
 
 

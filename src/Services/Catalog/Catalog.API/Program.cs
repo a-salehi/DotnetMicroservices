@@ -4,6 +4,7 @@ using Common.Logging;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
 
@@ -19,9 +20,9 @@ builder.Services.AddControllers();
 
 builder.Services.AddAuthentication("Bearer")
                     .AddJwtBearer("Bearer", options =>
-                    {
-                        options.RequireHttpsMetadata = false;
+                    {                        
                         options.Authority = "http://identityserver:7000";
+                        options.RequireHttpsMetadata = false;
                         options.TokenValidationParameters = new TokenValidationParameters
                         {
                             ValidateAudience = false
@@ -50,6 +51,7 @@ app.UseCookiePolicy(new CookiePolicyOptions()
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    IdentityModelEventSource.ShowPII = true;
     app.UseSwagger();
     app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Catalog.API v1"));
 }

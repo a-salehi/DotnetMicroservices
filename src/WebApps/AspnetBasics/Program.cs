@@ -48,10 +48,11 @@ builder.Services.AddHttpClient<IOrderService, OrderService>(c =>
 
 builder.Services.AddHttpClient<IUserService, UserService>(client =>
                 {
-                   client.BaseAddress = new Uri("http://identityserver:7000");
-                   client.DefaultRequestHeaders.Clear();
-                   client.DefaultRequestHeaders.Add(HeaderNames.Accept, "application/json");
+                    client.BaseAddress = new Uri("http://identityserver:7000");
+                    client.DefaultRequestHeaders.Clear();
+                    client.DefaultRequestHeaders.Add(HeaderNames.Accept, "application/json");
                 });
+
 // 2 create an HttpClient used for accessing the IDP
 //builder.Services.AddHttpClient("IDPClient", client =>
 //{

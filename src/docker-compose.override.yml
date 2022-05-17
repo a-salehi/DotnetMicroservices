@@ -214,8 +214,6 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
     ports:
       - "7000:7000"
-    networks:
-     - mconetwork
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
 
@@ -234,7 +232,5 @@ services:
       - ordering.api
     ports:
       - "8006:8006"
-    networks:
-     - mconetwork
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
