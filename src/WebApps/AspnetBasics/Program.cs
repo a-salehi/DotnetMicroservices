@@ -46,11 +46,11 @@ builder.Services.AddHttpClient<IOrderService, OrderService>(c =>
                 .AddPolicyHandler(GetRetryPolicy())
                 .AddPolicyHandler(GetCircuitBreakerPolicy());
 
-builder.Services.AddHttpClient<IUserService, UserService>(client =>
+builder.Services.AddHttpClient<IUserService, UserService>(c =>
                 {
-                    client.BaseAddress = new Uri("http://identityserver:7000");
-                    client.DefaultRequestHeaders.Clear();
-                    client.DefaultRequestHeaders.Add(HeaderNames.Accept, "application/json");
+                    c.BaseAddress = new Uri("http://identityserver:7000");
+                    c.DefaultRequestHeaders.Clear();
+                    c.DefaultRequestHeaders.Add(HeaderNames.Accept, "application/json");
                 });
 
 // 2 create an HttpClient used for accessing the IDP

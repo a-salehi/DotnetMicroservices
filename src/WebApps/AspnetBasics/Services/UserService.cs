@@ -20,10 +20,16 @@ namespace AspnetBasics.Services
         {
             //var idpClient = _httpClientFactory.CreateClient("IDPClient");
 
-            var metaDataResponse = await _client.GetDiscoveryDocumentAsync();
+            var metaDataResponse = await _client.GetDiscoveryDocumentAsync(new DiscoveryDocumentRequest
+            {
+                Policy =  {
+                              RequireHttps = false
+                          }
+            });
 
             if (metaDataResponse.IsError)
             {
+                //throw new HttpRequestException(metaDataResponse.Error);
                 throw new HttpRequestException("Something went wrong while requesting the access token");
             }
 
