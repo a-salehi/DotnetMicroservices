@@ -13,7 +13,7 @@ namespace Catalog.UnitTests.MockData
         {
             return new List<Product>{
              new Product{
-                 Id = "1",
+                 Id = "602d2149e773f2a3990b47f1",
                  Name = "iPhone X",
                  Category = "Smart phone",
                  Summary = "",
@@ -22,7 +22,7 @@ namespace Catalog.UnitTests.MockData
                  Price = 100
              },
              new Product{
-                 Id = "2",
+                 Id = "602d2149e773f2a3990b47f2",
                  Name = "Sumsung A10",
                  Category = "Smart phone",
                  Summary = "",
@@ -31,7 +31,7 @@ namespace Catalog.UnitTests.MockData
                  Price = 150
              },
              new Product{
-                 Id = "3",
+                 Id = "602d2149e773f2a3990b47f3",
                  Name = "iPhone X",
                  Category = "Smart phone",
                  Summary = "",
@@ -51,8 +51,8 @@ namespace Catalog.UnitTests.MockData
         {
             return new Product
             {
-                Id = "0",
-                Name = "iPhone X",
+                Id = "602d2149e773f2a3990b47f4",
+                Name = "iPhone X7",
                 Category = "Smart phone",
                 Summary = "",
                 Description = "iPhone X mobile phone",

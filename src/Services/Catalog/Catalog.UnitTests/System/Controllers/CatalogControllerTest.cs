@@ -86,7 +86,7 @@ namespace Catalog.UnitTests.System.Controllers
         public async Task GetProductByIdTest()
         {
             /// Arrange
-            var id = "1";
+            var id = "602d2149e773f2a3990b47f1";
 
             /// Act
             var okObjectResult = await _controller.GetProductById(id);
@@ -140,14 +140,14 @@ namespace Catalog.UnitTests.System.Controllers
             /// Assert
             var response = Assert.IsType<CreatedAtRouteResult>(createdResponse.Result);
             var item = Assert.IsType<Product>(response.Value);
-            Assert.Equal("iPhone X", item.Name);
+            Assert.Equal("iPhone X7", item.Name);
         }
 
         [Fact]
         public async Task UpdateProductTest()
         {
             /// Arrange
-            var id = "1";
+            var id = "602d2149e773f2a3990b47f1";
 
             /// Act
             var okObjectResult = await _controller.UpdateProduct(new Product { Id = id, Name = "Samsung Galaxy S10+", Description = "Samsung Galaxy S10+ mobile phone", Price = 1100 });
@@ -162,7 +162,7 @@ namespace Catalog.UnitTests.System.Controllers
         public async Task DeleteProductByIdTest()
         {
             /// Arrange
-            var id = "1";
+            var id = "602d2149e773f2a3990b47f1";
             var item = _items.Find(i => i.Id == id);
 
 
