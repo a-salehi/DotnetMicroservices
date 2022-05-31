@@ -22,5 +22,9 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\BuildingBlocks\Common.Logging\Common.Logging.csproj" />
   </ItemGroup>
-
+	
+  <ItemGroup>
+		<InternalsVisibleTo Include="..\Catalog.UnitTests\Catalog.UnitTests.csproj" />
+  </ItemGroup>
+	
 </Project>

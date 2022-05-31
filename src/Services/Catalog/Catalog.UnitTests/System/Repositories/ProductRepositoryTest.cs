@@ -1,6 +1,4 @@
-﻿
-
-using Catalog.API.Data;
+﻿using Catalog.API.Data;
 using Catalog.API.Entities;
 using Catalog.API.Repositories;
 using Catalog.UnitTests.MockData;

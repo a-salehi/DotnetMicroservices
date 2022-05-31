@@ -18,6 +18,20 @@ builder.Services.AddScoped<ICatalogContext, CatalogContext>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddControllers();
 
+#if DEBUG
+
+builder.Services.AddAuthentication("Bearer")
+                    .AddJwtBearer("Bearer", options =>
+                    {                        
+                        options.Authority = "http://localhost:7000";
+                        options.RequireHttpsMetadata = false;
+                        options.TokenValidationParameters = new TokenValidationParameters
+                        {
+                            ValidateAudience = false
+                        };
+                    });
+#else
+
 builder.Services.AddAuthentication("Bearer")
                     .AddJwtBearer("Bearer", options =>
                     {                        
@@ -28,6 +42,8 @@ builder.Services.AddAuthentication("Bearer")
                             ValidateAudience = false
                         };
                     });
+
+#endif
 
 builder.Services.AddAuthorization(options =>
 {
@@ -68,3 +84,5 @@ app.MapHealthChecks("/hc", new HealthCheckOptions()
  });
 
 app.Run();
+
+public partial class Program { }
